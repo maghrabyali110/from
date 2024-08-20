@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدونة تفاعلية</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .welcome-message {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .icon-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5rem;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 100%;
+            display: none;
+        }
+        .post {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .icon {
+            background-color: #ff7e5f;
+            border-radius: 50%;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+        .post-content {
+            flex-grow: 1;
+        }
+        .post h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .post p {
+            margin: 10px 0 0;
+            font-size: 1rem;
+        }
+        .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .actions button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #ff7e5f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+        .actions button:hover {
+            background-color: #feb47b;
+        }
+        .edit-mode input, .edit-mode textarea {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.6);
+            color: #333;
+            font-size: 1rem;
+        }
+        .edit-mode button.save {
+            background-color: #4caf50;
+        }
+        .edit-mode button.save:hover {
+            background-color: #45a049;
+        }
+        .add-post-container {
+            display: none;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.6);
+            color: #333;
+            font-size: 1rem;
+        }
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #ff7e5f;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #feb47b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-message">
+        مرحبا بكم في مدونتي التفاعلية! استمتع بكتابة ومشاركة مقالاتك.
+    </div>
+
+    <div class="icon-container">
+        <div class="header add-post-btn" onclick="toggleAddPost()">➕</div>
+        <div class="header" onclick="togglePosts()">📰</div>
+    </div>
+
+    <h1>مدونتي التفاعلية</h1>
+
+    <div class="add-post-container">
+        <input type="text" id="title" placeholder="عنوان المقالة">
+        <textarea id="content" rows="4" placeholder="محتوى المقالة"></textarea>
+        <button onclick="addPost()">إضافة مقالة</button>
+    </div>
+
+    <div class="container">
+        <div id="posts"></div>
+    </div>
+
+    <script>
+        function toggleAddPost() {
+            const addPostContainer = document.querySelector('.add-post-container');
+            addPostContainer.style.display = addPostContainer.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function togglePosts() {
+            const container = document.querySelector('.container');
+            container.style.display = container.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function addPost() {
+            const postsContainer = document.getElementById('posts');
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            if (title && content) {
+                const post = document.createElement('div');
+                post.className = 'post';
+
+                post.innerHTML = `
+                    <div class="icon">📝</div>
+                    <div class="post-content">
+                        <h2>${title}</h2>
+                        <p>${content}</p>
+                        <div class="actions">
+                            <button onclick="editPost(this)">تعديل</button>
+                            <button onclick="deletePost(this)">حذف</button>
+                        </div>
+                    </div>
+                `;
+
+                postsContainer.prepend(post);
+
+                // Clear the input fields
+                document.getElementById('title').value = '';
+                document.getElementById('content').value = '';
+            } else {
+                alert('الرجاء إدخال عنوان ومحتوى للمقالة.');
+            }
+        }
+
+        function deletePost(button) {
+            const post = button.closest('.post');
+            post.remove();
+        }
+
+        function editPost(button) {
+            const post = button.closest('.post');
+            const title = post.querySelector('h2').textContent;
+            const content = post.querySelector('p').textContent;
+
+            post.classList.add('edit-mode');
+
+            post.innerHTML = `
+                <div class="icon">✏️</div>
+                <div class="post-content">
+                    <input type="text" value="${title}">
+                    <textarea rows="4">${content}</textarea>
+                    <div class="actions">
+                        <button class="save" onclick="savePost(this)">حفظ</button>
+                        <button onclick="cancelEdit(this)">إلغاء</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function savePost(button) {
+            const post = button.closest('.post');
+            const title = post.querySelector('input').value;
+            const content = post.querySelector('textarea').value;
+
+            if (title && content) {
+                post.classList.remove('edit-mode');
+
+                post.innerHTML = `
+                    <div class="icon">📝</div>
+                    <div class="post-content">
+                        <h2>${title}</h2>
+                        <p>${content}</p>
+                        <div class="actions">
+                            <button onclick="editPost(this)">تعديل</button>
+                            <button onclick="deletePost(this)">حذف</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                alert('الرجاء إدخال عنوان ومحتوى للمقالة.');
+            }
+        }
+
+        function cancelEdit(button) {
+            const post = button.closest('.post');
+            const title = post.querySelector('input').value;
+            const content = post.querySelector('textarea').value;
+
+            post.classList.remove('edit-mode');
+
+            post.innerHTML = `
+                <div class="icon">📝</div>
+                <div class="post-content">
+                    <h2>${title}</h2>
+                    <p>${content}</p>
+                    <div class="actions">
+                        <button onclick="editPost(this)">تعديل</button>
+                        <button onclick="deletePost(this)">حذف</button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+
+</body>
+</html>
